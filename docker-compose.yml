@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build: .  # Build the Dockerfile in the current directory
+    ports:
+      - "3001:3000"  # Map port 3000 of the container to port 3000 on the host
+    environment:
+      - DB_URI=mongodb://root:cvHdes9pDwuFKkGHwMbuUTex@172.21.29.38:27017  # MongoDB connection URI
+      - JWT_SECRET=9512207b5638c2b791fa79ab90506d10fa9b9f35c81f60bd75dcb14cc837be27  # Set your JWT secret here
+      - PORT=3000  # Set the application port
+    depends_on:
+      - mongo  # Ensure MongoDB starts before the app
+
+  mongo:
+    image: mongo:latest  # Use the latest official MongoDB image
+    ports:
+      - "27017:27017"  # Map port 27017 of the container to port 27017 on the host
+    volumes:
+      - mongo_data:/data/db  # Persist MongoDB data
+
+volumes:
+  mongo_data:  # Define a named volume for MongoDB data persistence
